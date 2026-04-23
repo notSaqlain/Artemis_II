@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  app:
+    image: harbor.avbo.cloud/devcontainer/php8.5-lts:0.0.1
+    volumes:
+      # Mount the parent directory (project root) into the container
+      - ../:/workspace:cached
+    # Keeps the container running so VS Code can attach to it
+    command: sleep infinity
+    depends_on:
+      - mongo
+
+  mongo:
+    image: docker.io/library/mongo:8.2.6-noble
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
